@@ -135,8 +135,8 @@ publishing {
                         "Kafka clients to use AWS IAM for authentication and authorization against Amazon MSK " +
                         "clusters that have AWS IAM enabled as an authentication mechanism"
                 scm {
-                    url = "https://github.com/aws/aws-msk-iam-auth"
-                    connection = "scm:git:https://github.com/aws/aws-msk-iam-auth.git"
+                    url = "https://github.com/mkoch1/aws-msk-iam-auth"
+                    connection = "scm:git:https://github.com/mkoch1/aws-msk-iam-auth.git"
                     developerConnection = "scm:git:git@github.com:aws/aws-msk-iam-auth.git"
                 }
                 licenses {
@@ -158,21 +158,16 @@ publishing {
 
     repositories {
         maven {
-            name = "sonatype-staging"
-            url "https://aws.oss.sonatype.org/service/local/staging/deploy/maven2"
+            name = "mkoch1"
+            url = "https://maven.pkg.github.com/mkoch1/aws-msk-iam-auth"
             credentials {
-                username project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : ""
-                password project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : ""
+                // The credentials (described in the next section)
+                username = project.hasProperty("gpr.user") ? project.property("gpr.user") : System.getenv("GITHUB_ACTOR")
+                password = project.hasProperty("gpr.key") ? project.property("gpr.key") : System.getenv("GITHUB_TOKEN")
             }
         }
     }
 
-}
-signing {
-    def signingKey = project.hasProperty('signingKey') ? project.property('signingKey') : ""
-    def signingPassword = project.hasProperty('signingPassword') ? project.property('signingPassword') : ""
-    useInMemoryPgpKeys(signingKey, signingPassword)
-    sign publishing.publications.mavenJava
 }
 
 
